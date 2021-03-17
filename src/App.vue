@@ -18,7 +18,8 @@
 import InputBox from "./components/InputBox"
 import ChooseBox from "./components/ChooseBox"
 import ClearBox from "./components/ClearBox"
-import localStorage from '@/utils/localStorage';
+import localStorage from '@/utils/localStorage'
+import PubSub from "pubsub-js"
 
 export default {
     name: 'App',
@@ -38,8 +39,13 @@ export default {
 
     },
     mounted() {
-        this.$refs.add.$on("addTodo",function (){
+        this.$refs.add.$on("addTodo", function () {
             console.log("接收到数据");
+        })
+        //    订阅
+        PubSub.subscribe('delTodo',(msg,token)=>{
+            console.log(msg, token);
+            this.delTodo(token)
         })
     },
     watch: {

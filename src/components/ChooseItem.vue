@@ -1,34 +1,37 @@
 <template>
-       <li :style='{backgroundColor:bgColor}' @mouseenter='liShow(true)' @mouseleave='liShow(false)'>
-           <input type='checkbox' v-model='todo.finished'>{{todo.content}}
-           <button v-show='isShowDelBtn' @click='delItem'>删除</button>
-       </li>
+    <li :style='{backgroundColor:bgColor}' @mouseenter='liShow(true)' @mouseleave='liShow(false)'>
+        <input type='checkbox' v-model='todo.finished'>{{todo.content}}
+        <button v-show='isShowDelBtn' @click='delItem'>删除</button>
+    </li>
 </template>
 
 <script>
+import PubSub from "pubsub-js"
 export default {
     name: "ChooseItem",
-    props:{
-        todo:Object,
-        delTodo:Function,
-        index:{
-            type:Number
+    props: {
+        todo: Object,
+        delTodo: Function,
+        index: {
+            type: Number
         }
     },
-    data(){
-        return{
-            isShowDelBtn:false,
-            bgColor:"#fff"
+    data() {
+        return {
+            isShowDelBtn: false,
+            bgColor: "#fff"
         }
     },
-    methods:{
-        liShow(type){
-            this.isShowDelBtn=type
-            this.bgColor=type?"#eeeeee":"#fff"
+    methods: {
+        liShow(type) {
+            this.isShowDelBtn = type
+            this.bgColor = type ? "#eeeeee" : "#fff"
         },
-        delItem(){
-            if(window.confirm("确认删除吗?")){
-                this.delTodo(this.index)
+        delItem() {
+            if (window.confirm("确认删除吗?")) {
+                //this.delTodo(this.index)
+                //  发布
+                PubSub.publishSync('delTodo',this.index)
             }
         }
     }
@@ -47,7 +50,8 @@ li {
     padding-left: 10px;
     box-sizing: border-box;
 }
-button{
+
+button {
     margin-left: auto;
     margin-right: 10px;
     height: 24px;
