@@ -1,7 +1,9 @@
 <template>
     <div id='clear_box'>
-        <div><input type='checkbox' :disabled='disable' v-model='isAllChecked'>已完成{{finishedCount}}件/总计{{todos.length}}件</div>
-        <button :disabled='disable' :class='{disable:disable}' @click='delFinishied'>清除已完成任务</button>
+        <slot name='checkbox'></slot>
+        <!--<div><input type='checkbox' :disabled='disable' v-model='isAllChecked'>已完成{{finishedCount}}件/总计{{todos.length}}件</div>-->
+        <slot name='delete'></slot>
+        <!--<button :disabled='disable' :class='{disable:disable}' @click='delFinishied'>清除已完成任务</button>-->
     </div>
 </template>
 

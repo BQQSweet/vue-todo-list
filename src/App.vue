@@ -8,7 +8,10 @@
                 <choose-box :todos='todos' :delTodo='delTodo'></choose-box>
             </div>
             <div id='footer'>
-                <clear-box :todos="todos" :disable='disable' :delFinishiedTodo='delFinishiedTodo'></clear-box>
+                <clear-box>
+                    <div slot='checkbox'><input type='checkbox' :disabled='disable' v-model='isAllChecked'>已完成{{finishedCount}}件/总计{{todos.length}}件</div>
+                    <button slot='delete' :disabled='disable' :class='{disable:disable}' @click='delFinishiedTodo'>清除已完成任务</button>
+                </clear-box>
             </div>
         </div>
     </div>
@@ -47,6 +50,22 @@ export default {
             console.log(msg, token);
             this.delTodo(token)
         })
+    },
+    computed: {
+        finishedCount(){
+            return this.todos.reduce((total,current)=>{
+                return total+(current.finished?1:0)
+            },0)
+        },
+        isAllChecked: {
+            get() {
+                return this.finishedCount == this.todos.length&&this.todos.length>0
+            },
+            set(e) {
+                this.todos.map(v=>v.finished=e)
+            }
+        }
+
     },
     watch: {
         todos: {
